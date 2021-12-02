@@ -1,54 +1,64 @@
-import { useState }  from "react";
+import React, { useState } from "react";
 import "./styles.css";
-var emojiDictionary = {
-  "😀" : "smiling",
-  "😢" :"crying",
-  "😉" : "winking",
-  "❤️" : "love",
-  "🔥" : "fire"
+var movies = {
+  BOLLYWOOD: [
+    {
+      name: "Tanhaji -the unsung warrior",
+      rating: 7.2
+    },
+    { name: "Antim", rating: 9.2 }
+  ],
+  HOLLYWOOD: [
+    {
+      name: " The Wolf of Wall Street ",
+      rating: 8.3
+    },
+    { name: " Miracle in Cell No. 7 ", rating: 8.4 }
+  ],
+  TOLLYWOOD: [
+    {
+      name: "Ellam Sheriyakum",
+      rating: 9.3
+    },
+    { name: "Ram Asur", rating: 9.2 }
+  ]
 };
 
-var emojiWeKnow = Object.keys(emojiDictionary)
-
+var types = Object.keys(movies);
 export default function App() {
+  var [show, setShow] = useState([]);
 
-  var[emojiview , setEmojiView] = useState("")
-
-  function clickChange(event) {
-  var userInput = event.target.value;
-  var meaning = emojiDictionary[userInput];
-  
-  if(meaning === undefined){
-    meaning = "this is not in our database";
-  }else {
-    emojiview = meaning;
-  }
-
-setEmojiView(meaning);
-  }
-
-  function emojiClickHandler(emoji){
-   var meaning = emojiDictionary[emoji]
-   setEmojiView(meaning)
+  function onClickHandler(zone) {
+    var zones = movies[zone];
+    setShow(zones);
   }
 
   return (
     <div className="App">
-      <h1>Know your emoji  </h1>
-      <input onChange = {clickChange}/>
-      <h2> {emojiview}</h2>
-      <h3>Emoji We know </h3>
-      {
-        emojiWeKnow.map(function(emoji) {
-          return <span
-          onClick = { ()=> emojiClickHandler(emoji)}
-           style = {{fontSize: "large", padding: "2rem", cursor: "pointer"}} key={emoji}> {emoji} </span>
-        })
-      }
-    
-
-     
-      
+      <h1 className="title">Movies categories </h1>
+      <small className="small">explore your favourite zone!!</small>
+      <div style={{ padding: "rem" }}>
+        {types.map(function (zone) {
+          return (
+            <button
+              onClick={() => onClickHandler(zone)}
+              style={{ margin: "1rem", padding: "0.5rem" }}
+            >
+              {zone}
+            </button>
+          );
+        })}{" "}
+      </div>
+      <h2>
+        {show.map(function (item) {
+          return (
+            <div style={{ paddingTop: "2rem" }}>
+              <div style={{ fontSize: "2rem" }}>{item.name}</div>
+              <small>IMDB: {item.rating}</small>
+            </div>
+          );
+        })}
+      </h2>
     </div>
   );
 }
